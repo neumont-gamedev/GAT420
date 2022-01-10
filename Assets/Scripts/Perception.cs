@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Perception : MonoBehaviour
+public abstract class Perception : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public string tagName;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public abstract GameObject[] GetGameObjects();
 }
