@@ -16,7 +16,15 @@ public class DistancePerception : Perception
 		{
 			if (tagName == "" || collider.CompareTag(tagName))
 			{
-				result.Add(collider.gameObject);
+				// check if within angle
+				Vector3 direction = (collider.transform.position - transform.position).normalized;
+				float cos = Vector3.Dot(transform.forward, direction);
+				float angle = Mathf.Acos(cos) * Mathf.Rad2Deg;
+				// add collider.gameObject to result
+				if (angle <= maxAngle)
+				{
+					result.Add(collider.gameObject);
+				}
 			}
 		}
 
