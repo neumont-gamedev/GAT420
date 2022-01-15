@@ -41,7 +41,55 @@ public class Steering : MonoBehaviour
 		return force;
 	}
 
-	Vector3 CalculateSteering(AutonomousAgent agent, Vector3 vector)
+	public Vector3 Cohesion(AutonomousAgent agent, GameObject[] targets)
+	{
+		Vector3 centerOfTargets = Vector3.zero;
+		foreach (GameObject target in targets)
+		{
+			centerOfTargets += target.transform.position;
+		}
+
+		centerOfTargets /= targets.Length;
+
+		Vector3 force = CalculateSteering(agent, centerOfTargets - agent.transform.position);
+
+		return force;
+	}
+
+	public Vector3 Separation(AutonomousAgent agent, GameObject[] targets, float radius)
+	{
+		Vector3 separation = Vector3.zero;
+		foreach (GameObject target in targets)
+		{
+			Vector3 direction = (agent.transform.position - target.transform.position);
+			if (direction.magnitude < radius)
+			{
+				separation += direction / direction.sqrMagnitude;
+			}
+		}
+
+		Vector3 force = CalculateSteering(agent, separation);
+
+		return force;
+	}
+
+	public Vector3 Alignment(AutonomousAgent agent, GameObject[] targets)
+	{
+		if (targets.Length == 0) return Vector3.zero;
+
+		Vector3 averageVelocity = Vector3.zero;
+		foreach (GameObject target in targets)
+		{
+			averageVelocity += target.GetComponent<AutonomousAgent>().velocity;
+		}
+		averageVelocity /= targets.Length;
+
+		Vector3 force = CalculateSteering(agent, averageVelocity);
+
+		return force;
+	}
+
+	public Vector3 CalculateSteering(AutonomousAgent agent, Vector3 vector)
 	{
 		Vector3 direction = vector.normalized;
 		Vector3 desired = direction * agent.maxSpeed;

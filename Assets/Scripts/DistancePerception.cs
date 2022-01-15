@@ -14,6 +14,8 @@ public class DistancePerception : Perception
 		Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
 		foreach (Collider collider in colliders)
 		{
+			if (collider.gameObject == gameObject) continue;
+
 			if (tagName == "" || collider.CompareTag(tagName))
 			{
 				// check if within angle
