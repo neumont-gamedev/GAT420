@@ -5,9 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AutonomousAgentData", menuName = "AI/AutonomousAgentData")]
 public class AutonomousAgentData : ScriptableObject
 {
-    [Header("Movement")]
-    [Range(0, 20)] public float maxSpeed = 12;
-    [Range(0, 20)] public float maxForce = 8;
     [Header("Weight")]
     [Range(0, 5)] public float seekWeight = 1;
     [Range(0, 5)] public float fleeWeight = 1;

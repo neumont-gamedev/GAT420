@@ -80,7 +80,7 @@ public class Steering : MonoBehaviour
 		Vector3 averageVelocity = Vector3.zero;
 		foreach (GameObject target in targets)
 		{
-			averageVelocity += target.GetComponent<AutonomousAgent>().velocity;
+			averageVelocity += target.GetComponent<AutonomousAgent>().movement.velocity;
 		}
 		averageVelocity /= targets.Length;
 
@@ -92,9 +92,9 @@ public class Steering : MonoBehaviour
 	public Vector3 CalculateSteering(AutonomousAgent agent, Vector3 vector)
 	{
 		Vector3 direction = vector.normalized;
-		Vector3 desired = direction * agent.maxSpeed;
-		Vector3 steer = desired - agent.velocity;
-		Vector3 force = Vector3.ClampMagnitude(steer, agent.maxForce);
+		Vector3 desired = direction * agent.movement.maxSpeed;
+		Vector3 steer = desired - agent.movement.velocity;
+		Vector3 force = Vector3.ClampMagnitude(steer, agent.movement.maxForce);
 
 		return force;
 	}
