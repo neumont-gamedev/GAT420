@@ -6,7 +6,7 @@ public class SearchAgent : Agent
 {
     [SerializeField] Node initialNode;
 
-    public Node targetNode { get; set; }
+	public Node targetNode { get; set; }
 
 	private void Start()
 	{
