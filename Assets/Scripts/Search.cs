@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-//using System.Linq;
+using System.Linq;
 using UnityEngine;
 
 public static class Search
@@ -67,7 +67,67 @@ public static class Search
 	{
 		bool found = false;
 
-		
+		// create queue of graph nodes
+		var nodes = new Queue<GraphNode>();
+
+		// set source node visited to true
+		source.visited = true;
+		// enqueue source node
+		nodes.Enqueue(source);
+
+		// set the current number of steps
+		int steps = 0;
+		while (!found && nodes.Count > 0 && steps++ < maxSteps)
+		{
+			// dequeue node
+			var node = nodes.Dequeue();
+			// go through edges of node
+			foreach (var edge in node.edges)
+			{
+				// if nodeB is not visited
+				if (edge.nodeB.visited == false)
+				{
+					// set nodeB visited to true
+					edge.nodeB.visited = true;
+					// set nodeB parent to node
+					edge.nodeB.parent = node;
+					// enqueue nodeB
+					nodes.Enqueue(edge.nodeB);
+				}
+				// check if nodeB is the destination node
+				if (edge.nodeB == destination)
+				{
+					// set found to true
+					found = true;
+					break;
+				}
+			}
+		}
+
+		// create a list of graph nodes (path)
+		path = new List<GraphNode>();
+		// if found is true
+		if (found)
+		{
+			// set node to destination
+			var node = destination;
+			// while node not null
+			while (node != null)
+			{
+				// add node to list path
+				path.Add(node);
+				// set node to node parent
+				node = node.parent;
+			}
+
+			// reverse path
+			path.Reverse();
+		}
+		else
+		{
+			// did not find destination, convert nodes queue to path
+			path = nodes.ToList();
+		}
 
 
 		return found;
