@@ -16,11 +16,4 @@ public class WaypointNode : Node
 			}
 		}
 	}
-
-	public static WaypointNode GetRandomWaypoint()
-	{
-		var waypoints = GameObject.FindObjectsOfType<WaypointNode>();
-
-		return (waypoints == null) ? null : waypoints[Random.Range(0, waypoints.Length)];
-	}
 }

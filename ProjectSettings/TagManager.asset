@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Agent1
+  - Agent2
+  - SearchAgent
+  - WaypointAgent
   layers:
   - Default
   - TransparentFX
@@ -13,7 +16,7 @@ TagManager:
   - Water
   - UI
   - Spawner
-  - 
+  - Node
   - 
   - 
   - 

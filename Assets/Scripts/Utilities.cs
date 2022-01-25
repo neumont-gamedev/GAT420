@@ -19,4 +19,27 @@ public static class Utilities
 
         return result;
     }
+
+	public static bool ScreenToWorld(Vector2 screen, LayerMask layerMask, ref Vector3 position)
+	{
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (Physics.Raycast(ray, out RaycastHit hitInfo, 100))
+		{
+			// check if hit layer mask
+			if (((1 << hitInfo.collider.gameObject.layer) & layerMask) == 0) return false;
+
+			position = hitInfo.point;
+		}
+
+		return true;
+	}
+
+	public static Vector3 SnapToGrid(Vector3 v, Vector3 grid)
+	{
+		v.x = (grid.x == 0) ? v.x : Mathf.RoundToInt(v.x / grid.x) * grid.x;
+		v.y = (grid.y == 0) ? v.y : Mathf.RoundToInt(v.y / grid.y) * grid.y;
+		v.z = (grid.z == 0) ? v.z : Mathf.RoundToInt(v.z / grid.z) * grid.z;
+
+		return v;
+	}
 }

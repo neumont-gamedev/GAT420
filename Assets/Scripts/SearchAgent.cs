@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SearchAgent : Agent
 {
-    [SerializeField] Node initialNode;
+    [SerializeField] protected Node initialNode;
 
 	public Node targetNode { get; set; }
 
