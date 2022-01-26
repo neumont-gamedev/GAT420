@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Priority_Queue;
 
 public static class Search
 {
@@ -35,14 +36,14 @@ public static class Search
 			node.visited = true;
 
 			bool forward = false;
-			foreach(var edge in node.edges)
+			foreach(var neighbor in node.neighbors)
 			{
-				if (!edge.nodeB.visited)
+				if (!neighbor.visited)
 				{
-					nodes.Push(edge.nodeB);
+					nodes.Push(neighbor);
 					forward = true;
 
-					if (edge.nodeB == destination)
+					if (neighbor == destination)
 					{
 						found = true;
 					}
@@ -82,20 +83,20 @@ public static class Search
 			// dequeue node
 			var node = nodes.Dequeue();
 			// go through edges of node
-			foreach (var edge in node.edges)
+			foreach (var neighbor in node.neighbors)
 			{
 				// if nodeB is not visited
-				if (edge.nodeB.visited == false)
+				if (neighbor.visited == false)
 				{
 					// set nodeB visited to true
-					edge.nodeB.visited = true;
+					neighbor.visited = true;
 					// set nodeB parent to node
-					edge.nodeB.parent = node;
+					neighbor.parent = node;
 					// enqueue nodeB
-					nodes.Enqueue(edge.nodeB);
+					nodes.Enqueue(neighbor);
 				}
 				// check if nodeB is the destination node
-				if (edge.nodeB == destination)
+				if (neighbor == destination)
 				{
 					// set found to true
 					found = true;

@@ -5,21 +5,16 @@ using UnityEngine;
 
 public class GraphNode : Node
 {
-    public struct Edge
-    {
-        public GraphNode nodeA;
-        public GraphNode nodeB;
-    }
-
     public GraphNode parent { get; set; } = null;
     public bool visited { get; set; } = false;
-    public List<Edge> edges { get; set; } = new List<Edge>();
+    public float cost { get; set; } = float.MaxValue;
+    public List<GraphNode> neighbors { get; set; } = new List<GraphNode>();
 
     public static void UnlinkNodes()
     {
         // clear all nodes edges
         var nodes = GetNodes<GraphNode>();
-        nodes.ToList().ForEach(node => node.edges.Clear());
+        nodes.ToList().ForEach(node => node.neighbors.Clear());
     }
 
     public static void LinkNodes(float radius)
@@ -39,13 +34,7 @@ public class GraphNode : Node
             GraphNode colliderNode = collider.GetComponent<GraphNode>();
             if (colliderNode != null && colliderNode != node)
             {
-                // create edge from node to collider node
-                Edge edge;
-                edge.nodeA = node;
-                edge.nodeB = colliderNode;
-
-                // add edge to node edges
-                node.edges.Add(edge);
+                node.neighbors.Add(colliderNode);
             }
         }
     }
@@ -54,6 +43,6 @@ public class GraphNode : Node
     {
         // reset nodes visited and parent
         var nodes = GetNodes<GraphNode>();
-        nodes.ToList().ForEach(node => { node.visited = false; node.parent = null; });
+        nodes.ToList().ForEach(node => { node.visited = false; node.parent = null; node.cost = float.MaxValue; });
     }
 }

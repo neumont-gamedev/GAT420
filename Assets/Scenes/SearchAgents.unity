@@ -699,6 +699,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   steps: 0
   nodeSelector: {fileID: 261833184}
+  searchType: 0
+  info: 
 --- !u!4 &261833186
 Transform:
   m_ObjectHideFlags: 0

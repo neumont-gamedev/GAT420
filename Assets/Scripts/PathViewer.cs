@@ -5,8 +5,18 @@ using UnityEngine;
 
 public class PathViewer : MonoBehaviour
 {
+	enum SearchType
+	{
+		DFS,
+		BFS,
+		DIJKSTRA,
+		ASTAR
+	}
+
 	[Range(0, 500)] public int steps = 0;
 	[SerializeField] GraphNodeSelector nodeSelector;
+	[SerializeField] SearchType searchType;
+	[SerializeField] [TextArea] string info;
 
 	public bool visible { get; set; } = true;
 
@@ -14,13 +24,27 @@ public class PathViewer : MonoBehaviour
 	bool found = false;
 	List<GraphNode> path = new List<GraphNode>();
 
+	Search.SearchAlgorithm[] searchAlgorithms = { Search.DFS, Search.BFS, null, null };
+	Search.SearchAlgorithm searchAlgorithm;
+	SearchType prevSearchType;
+
 	private void Start()
 	{
 		prevSteps = steps;
+		searchAlgorithm = searchAlgorithms[(int)searchType];
+		prevSearchType = searchType;
 	}
 
 	private void Update()
 	{
+		// update search type
+		if (searchType != prevSearchType)
+		{
+			searchAlgorithm = searchAlgorithms[(int)searchType];
+			BuildPath();
+		}
+		prevSearchType = searchType;
+
 		// build path
 		steps = Mathf.Clamp(steps, 0, 500);
 		if (steps != prevSteps)
@@ -33,7 +57,7 @@ public class PathViewer : MonoBehaviour
 		{
 			// show node connections
 			var nodes = Node.GetNodes<GraphNode>();
-			nodes.ToList().ForEach(node => node.edges.ForEach(edge => Debug.DrawLine(edge.nodeA.transform.position, edge.nodeB.transform.position)));
+			nodes.ToList().ForEach(node => node.neighbors.ForEach(neighbor => Debug.DrawLine(node.transform.position, neighbor.transform.position)));
 
 			// reset graph nodes color
 			nodes.ToList().ForEach(node => node.GetComponent<Renderer>().material.color = node.visited ? Color.black : Color.white);
@@ -50,7 +74,7 @@ public class PathViewer : MonoBehaviour
 		GraphNode.ResetNodes();
 
 		// build path
-		found = Search.BuildPath(Search.BFS, nodeSelector.sourceNode, nodeSelector.destinationNode, ref path, steps);
+		found = Search.BuildPath(searchAlgorithm, nodeSelector.sourceNode, nodeSelector.destinationNode, ref path, steps);
 	}
 
 	public void ShowNodes()
