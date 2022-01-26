@@ -10,6 +10,11 @@ public class GraphNode : Node
     public float cost { get; set; } = float.MaxValue;
     public List<GraphNode> neighbors { get; set; } = new List<GraphNode>();
 
+    public float DistanceTo(GraphNode node)
+    {
+        return Vector3.Distance(transform.position, node.transform.position);
+    }
+
     public static void UnlinkNodes()
     {
         // clear all nodes edges

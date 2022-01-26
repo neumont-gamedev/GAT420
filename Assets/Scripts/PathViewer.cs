@@ -24,7 +24,7 @@ public class PathViewer : MonoBehaviour
 	bool found = false;
 	List<GraphNode> path = new List<GraphNode>();
 
-	Search.SearchAlgorithm[] searchAlgorithms = { Search.DFS, Search.BFS, null, null };
+	Search.SearchAlgorithm[] searchAlgorithms = { Search.DFS, Search.BFS, Search.Dijkstra, Search.AStar };
 	Search.SearchAlgorithm searchAlgorithm;
 	SearchType prevSearchType;
 
