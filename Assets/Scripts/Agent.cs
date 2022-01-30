@@ -5,4 +5,9 @@ using UnityEngine;
 public abstract class Agent : MonoBehaviour
 {
 	public Movement movement;
+
+	public static T[] GetAgents<T>() where T : Agent
+	{
+		return FindObjectsOfType<T>();
+	}
 }

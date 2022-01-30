@@ -10,6 +10,17 @@ public class GraphNode : Node
     public float cost { get; set; } = float.MaxValue;
     public List<GraphNode> neighbors { get; set; } = new List<GraphNode>();
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.TryGetComponent<SearchAgent>(out SearchAgent searchAgent))
+        {
+            if (searchAgent.targetNode == this)
+            {
+                searchAgent.targetNode = searchAgent.GetNextNode(this);
+            }
+        }
+    }
+
     public float DistanceTo(GraphNode node)
     {
         return Vector3.Distance(transform.position, node.transform.position);
