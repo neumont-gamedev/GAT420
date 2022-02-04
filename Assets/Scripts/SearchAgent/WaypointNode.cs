@@ -16,4 +16,15 @@ public class WaypointNode : Node
 			}
 		}
 	}
+
+	private void OnTriggerStay(Collider other)
+	{
+		if (other.gameObject.TryGetComponent<AgentPath>(out AgentPath agentPath))
+		{
+			if (agentPath.targetNode == this)
+			{
+				agentPath.targetNode = (nextWaypoints.Length == 0) ? null : nextWaypoints[Random.Range(0, nextWaypoints.Length)];
+			}
+		}
+	}
 }

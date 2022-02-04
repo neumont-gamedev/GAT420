@@ -4,6 +4,12 @@ using UnityEngine;
 
 public abstract class Transition
 {
-	public abstract bool ToTransition();
+	public enum Predicate
+	{
+		EQUAL,
+		LESS,
+		GREATER
+	}
 
+	public abstract bool ToTransition();
 }
