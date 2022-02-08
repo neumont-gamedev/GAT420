@@ -19,7 +19,7 @@ public class WaypointNode : Node
 
 	private void OnTriggerStay(Collider other)
 	{
-		if (other.gameObject.TryGetComponent<AgentPath>(out AgentPath agentPath))
+		if (other.gameObject.TryGetComponent<PathFollower>(out PathFollower agentPath))
 		{
 			if (agentPath.targetNode == this)
 			{

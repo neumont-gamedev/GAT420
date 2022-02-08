@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AgentPath : MonoBehaviour
+public class PathFollower : MonoBehaviour
 {
-    public PathNodes pathNodes;
+    public Path path;
     public Node targetNode { get; set; }
 	public bool complete { get => targetNode == null; }
 
