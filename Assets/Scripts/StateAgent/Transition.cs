@@ -8,6 +8,7 @@ public abstract class Transition
 	{
 		EQUAL,
 		LESS,
+		LESS_EQUAL,
 		GREATER
 	}
 
