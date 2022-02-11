@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 2384687213893391867}
   - component: {fileID: 2890598825317313691}
   - component: {fileID: -1923481790083248901}
-  - component: {fileID: 4924063501946334041}
+  - component: {fileID: 7704794137419076357}
   - component: {fileID: 1762406460501190582}
   - component: {fileID: 1762406460501190583}
   - component: {fileID: 1762406460501190580}
@@ -84,12 +84,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: -1923481790083248901}
-  animator: {fileID: 0}
-  pathFollower: {fileID: 0}
+  animator: {fileID: 280092406584246948}
+  perception: {fileID: 7704794137419076357}
+  pathFollower: {fileID: 2890598825317313691}
   enemySeen:
     value: 0
-  health:
+  enemyDistance:
     value: 0
+  health:
+    value: 100
   timer:
     value: 0
 --- !u!114 &2890598825317313691
@@ -118,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementData: {fileID: 11400000, guid: a588aac5ac1ba3449abcf09c23e478e7, type: 2}
---- !u!114 &4924063501946334041
+--- !u!114 &7704794137419076357
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,14 +130,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1762406460501190581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10bedcd8c1fe35940851e78d8661a4f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 935a0f8bcb82a0d45b68800b590274d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tagName: Player
-  raycastTransform: {fileID: 554744786619200285}
-  distance: 4
+  distance: 5
   angle: 80
+  raycastTransform: {fileID: 554744786619200285}
   numRaycast: 20
+  radius: 0.2
 --- !u!33 &1762406460501190582
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -291,10 +295,23 @@ PrefabInstance:
       propertyPath: m_Name
       value: swat
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: fbe0e8d7e80f725468732eb886b48e0c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6ea9924c93651c6419d42e728834a834, type: 2}
+    - target: {fileID: 5866666021909216657, guid: fbe0e8d7e80f725468732eb886b48e0c, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbe0e8d7e80f725468732eb886b48e0c, type: 3}
 --- !u!4 &6125804084088854750 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fbe0e8d7e80f725468732eb886b48e0c, type: 3}
+  m_PrefabInstance: {fileID: 5947428985196363573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &280092406584246948 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: fbe0e8d7e80f725468732eb886b48e0c, type: 3}
   m_PrefabInstance: {fileID: 5947428985196363573}
   m_PrefabAsset: {fileID: 0}

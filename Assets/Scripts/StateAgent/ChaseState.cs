@@ -11,17 +11,14 @@ public class ChaseState : State
 	public override void OnEnter()
 	{
 		owner.movement.Resume();
-		Debug.Log(name + " enter");
 	}
 
 	public override void OnExit()
 	{
-		Debug.Log(name + " exit");
 	}
 
 	public override void OnUpdate()
 	{
 		owner.movement.MoveTowards(owner.enemy.transform.position);
-		Debug.Log(name + " update");
 	}
 }

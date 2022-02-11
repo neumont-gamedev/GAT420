@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StateAgent : Agent
 {
-    [SerializeField] Perception perception;
+    [SerializeField] public Perception perception;
 
     public PathFollower pathFollower;
     public StateMachine stateMachine = new StateMachine();
@@ -23,19 +23,24 @@ public class StateAgent : Agent
         stateMachine.AddState(new ChaseState(this, typeof(ChaseState).Name));
         stateMachine.AddState(new DeathState(this, typeof(DeathState).Name));
         stateMachine.AddState(new AttackState(this, typeof(AttackState).Name));
+        stateMachine.AddState(new EvadeState(this, typeof(EvadeState).Name));
 
-        stateMachine.AddTransition(typeof(IdleState).Name, new BoolTransition(enemySeen, true), typeof(ChaseState).Name);
-        stateMachine.AddTransition(typeof(IdleState).Name, new FloatTransition(timer, Transition.Predicate.LESS, 0), typeof(PatrolState).Name);
-        stateMachine.AddTransition(typeof(IdleState).Name, new FloatTransition(health, Transition.Predicate.LESS_EQUAL, 0), typeof(DeathState).Name);
+        stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[]{ new BoolCondition(enemySeen, true) }), typeof(ChaseState).Name);
+        stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new FloatCondition(timer, Condition.Predicate.LESS, 0) }), typeof(PatrolState).Name);
+        stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
         
-        stateMachine.AddTransition(typeof(PatrolState).Name, new BoolTransition(enemySeen, true), typeof(ChaseState).Name);
-        stateMachine.AddTransition(typeof(PatrolState).Name, new FloatTransition(health, Transition.Predicate.LESS_EQUAL, 0), typeof(DeathState).Name);
+        stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true) }), typeof(ChaseState).Name);
+        stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
         
-        stateMachine.AddTransition(typeof(ChaseState).Name, new BoolTransition(enemySeen, false), typeof(IdleState).Name);
-        stateMachine.AddTransition(typeof(ChaseState).Name, new FloatTransition(health, Transition.Predicate.LESS_EQUAL, 0), typeof(DeathState).Name);
-        stateMachine.AddTransition(typeof(ChaseState).Name, new FloatTransition(enemyDistance, Transition.Predicate.LESS_EQUAL, 2), typeof(AttackState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, false) }), typeof(IdleState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition(new Condition[] { new FloatCondition(enemyDistance, Condition.Predicate.LESS_EQUAL, 2) }), typeof(AttackState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 30) }), typeof(EvadeState).Name);
         
-        stateMachine.AddTransition(typeof(AttackState).Name, new FloatTransition(timer, Transition.Predicate.LESS_EQUAL, 0), typeof(ChaseState).Name);
+        stateMachine.AddTransition(typeof(AttackState).Name, new Transition(new Condition[] { new FloatCondition(timer, Condition.Predicate.LESS_EQUAL, 0) }), typeof(ChaseState).Name);
+        stateMachine.AddTransition(typeof(AttackState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 30) }), typeof(EvadeState).Name);
+        
+        stateMachine.AddTransition(typeof(EvadeState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, false) }), typeof(IdleState).Name);
 
         stateMachine.SetState(stateMachine.StateFromName(typeof(IdleState).Name));
     }

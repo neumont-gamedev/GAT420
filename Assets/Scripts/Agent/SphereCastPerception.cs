@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RaycastPerception : Perception
+public class SphereCastPerception : Perception
 {
 	[SerializeField] Transform raycastTransform;
 	[SerializeField] [Range(2, 50)] public int numRaycast = 2;
+	[SerializeField] [Range(0, 5)] public float radius;
 
 	public override GameObject[] GetGameObjects()
 	{
@@ -17,17 +18,17 @@ public class RaycastPerception : Perception
 			Quaternion rotation = Quaternion.AngleAxis(-angle + (angleOffset * i), Vector3.up);
 			Vector3 direction = rotation * raycastTransform.forward;
 			Ray ray = new Ray(raycastTransform.position, direction);
-			if (Physics.Raycast(ray, out RaycastHit raycastHit, distance))
+			if (Physics.SphereCast(ray, radius, out RaycastHit raycastHit, distance))
 			{
 				if (tagName == "" || raycastHit.collider.CompareTag(tagName))
 				{
-					//Debug.DrawRay(ray.origin, ray.direction * raycastHit.distance, Color.red);
+					Debug.DrawRay(ray.origin, ray.direction * raycastHit.distance, Color.red);
 					result.Add(raycastHit.collider.gameObject);
 				}
 			}
 			else
 			{
-				//Debug.DrawRay(ray.origin, ray.direction * distance, Color.white);
+				Debug.DrawRay(ray.origin, ray.direction * distance, Color.white);
 			}
 		}
 
