@@ -12,6 +12,8 @@ public class DeathState : State
 	{
 		owner.movement.Stop();
 		owner.animator.SetTrigger("death");
+		
+		GameObject.Destroy(owner.gameObject, 3);
 	}
 
 	public override void OnExit()
