@@ -14,6 +14,7 @@ public class UtilityObject : MonoBehaviour
     [SerializeField] MeterUI meterPrefab;
     public float duration;
     public Transform location;
+    public GameObject effect;
 
     public Effector[] effectors;
     public Dictionary<Need.Type, float> registry = new Dictionary<Need.Type, float>();

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class UtilityController : MonoBehaviour
 {
-    [SerializeField] Agent agent;
+    [SerializeField] UtilityAgent agent;
     [SerializeField] LayerMask layerMask;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !agent.isUsingUtilityObject)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 100, layerMask))
