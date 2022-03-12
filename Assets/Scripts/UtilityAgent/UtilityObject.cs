@@ -14,6 +14,8 @@ public class UtilityObject : MonoBehaviour
     [SerializeField] MeterUI meterPrefab;
     public float duration;
     public Transform location;
+    public Transform actionLocation;
+    public string actionAnimation;
     public GameObject effect;
 
     public Effector[] effectors;

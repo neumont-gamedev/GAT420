@@ -61,6 +61,11 @@ public class UtilityAgent : Agent
                 StartCoroutine(ExecuteUtilityObject(activeUtilityObject));
 			}
 		}
+        else
+		{
+            activeUtilityObject.visible = true;
+            activeUtilityObject.score = GetUtilityObjectScore(activeUtilityObject);
+        }
     }
 
 	private void LateUpdate()
@@ -71,18 +76,31 @@ public class UtilityAgent : Agent
 
     IEnumerator ExecuteUtilityObject(UtilityObject utilityObject)
 	{
-        // go to location
-        movement.MoveTowards(utilityObject.location.position);
+		// go to location
+		movement.MoveTowards(utilityObject.location.position);
 
-        yield return new WaitWhile(() => Vector3.Distance(transform.position, utilityObject.location.position) > 0.25f);
-  //      while (Vector3.Distance(transform.position, utilityObject.location.position) > 0.25f)
-		//{
-  //          Debug.DrawLine(transform.position, utilityObject.location.position);
+        yield return new WaitUntil(() => Vector3.Distance(transform.position, utilityObject.location.position) < 0.5f);
 
-  //          yield return null;
-		//}
+        // transform to action location
+        ((NavMeshMovement)movement).navMeshAgent.enabled = false;
+        if (utilityObject.actionLocation != null)
+        {
+            float timer = 0;
+            // set the start transform from the current transorm
+            Transform startTransform = transform;
+            while (timer < 1)
+            {
+                timer += Time.deltaTime;
+                timer = Mathf.Min(timer, 1);
 
-        print("start effect");
+                // interpolate from start transform to action location
+                Utilities.Lerp(startTransform, utilityObject.actionLocation, transform, timer);
+                yield return null;
+            }
+        }
+
+        // play animation
+        animator.SetBool(utilityObject.actionAnimation, true);
 
         // start effect
         if (utilityObject.effect != null) utilityObject.effect.SetActive(true);
@@ -90,12 +108,33 @@ public class UtilityAgent : Agent
         // wait duration
         yield return new WaitForSeconds(utilityObject.duration);
 
-        print("stop effect");
+        // stop animation
+        animator.SetBool(utilityObject.actionAnimation, false);
 
         // stop effect
         if (utilityObject.effect != null) utilityObject.effect.SetActive(false);
 
-        // apply
+        // transform to location
+        ((NavMeshMovement)movement).navMeshAgent.enabled = false;
+        if (utilityObject.actionLocation != null)
+        {
+            float timer = 0;
+            // set the start transform from the current transorm
+            Transform startTransform = transform;
+            while (timer < 1)
+            {
+                timer += Time.deltaTime;
+                timer = Mathf.Min(timer, 1);
+
+                // interpolate from start transform to location
+                Utilities.Lerp(startTransform, utilityObject.location, transform, timer);
+                yield return null;
+            }
+        }
+        ((NavMeshMovement)movement).navMeshAgent.enabled = true;
+
+
+        // apply utility object effectors
         ApplyUtilityObject(utilityObject);
 
         activeUtilityObject = null;
